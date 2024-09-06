@@ -3,6 +3,18 @@ import TwitchProvider from "next-auth/providers/twitch";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
 
+// Add this import
+import { DefaultSession } from "next-auth";
+
+// Extend the Session type
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user?: {
+      id: string;
+    } & DefaultSession["user"]
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
