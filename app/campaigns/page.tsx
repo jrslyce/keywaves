@@ -2,6 +2,14 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import prisma from '../lib/prisma'
 
+interface Campaign {
+  id: string;
+  title: string;
+  marketer: { name: string };
+  description: string;
+  createdAt: Date;
+}
+
 async function getCampaigns() {
   const campaigns = await prisma.campaign.findMany({
     include: {
@@ -23,7 +31,7 @@ export default async function Campaigns() {
     <Layout>
       <h1 className="text-3xl font-bold mb-6">Available Campaigns</h1>
       <div className="grid gap-6">
-        {campaigns.map((campaign) => (
+        {campaigns.map((campaign: Campaign) => (
           <div key={campaign.id} className="border rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
             <h2 className="text-2xl font-semibold mb-2">{campaign.title}</h2>
             <p className="text-gray-600 mb-4">By {campaign.marketer.name}</p>
