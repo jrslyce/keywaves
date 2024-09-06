@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import prisma from '@/app/lib/prisma'
-import { authOptions } from '../auth/[...nextauth]/auth-options'
+import { authOptions } from '../auth/auth-options'
 
 // Add this type at the top of the file
 type SessionUser = {
