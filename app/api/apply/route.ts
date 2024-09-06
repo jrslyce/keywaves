@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import prisma from '@/app/lib/prisma'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '../auth/[...nextauth]/auth-options'
+
+// Add this type at the top of the file
+type SessionUser = {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+};
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
@@ -10,11 +18,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
+  // Cast the user to the new type
+  const user = session.user as SessionUser;
+
   const { companyName, website, reason } = await request.json()
 
   try {
-    const user = await prisma.user.update({
-      where: { id: session.user.id },
+    await prisma.user.update({
+      where: { id: user.id },
       data: {
         role: 'GAME_MARKETER',
         gameMarketerApplication: {

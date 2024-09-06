@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Layout from '../../components/Layout'
 import prisma from '../../lib/prisma'
+import Image from 'next/image'
 
 async function getCampaign(id: string) {
   const campaign = await prisma.campaign.findUnique({
@@ -29,7 +30,7 @@ export default async function CampaignDetail({ params }: { params: { id: string 
         <p className="text-gray-600 mb-4">By {campaign.marketer.name}</p>
         
         {campaign.logoUrl && (
-          <img src={campaign.logoUrl} alt={`${campaign.title} logo`} className="mb-4 max-w-md mx-auto" />
+          <Image src={campaign.logoUrl} alt={`${campaign.title} logo`} width={500} height={300} className="mb-4 max-w-md mx-auto" />
         )}
         
         {campaign.videoUrl && (
