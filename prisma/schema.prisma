@@ -13,13 +13,19 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
+enum UserRole {
+  ADMIN
+  GAME_MARKETER
+  CONTENT_CREATOR
+}
+
 model User {
   id                 String   @id @default(cuid())
   name               String?
   email              String?  @unique
   emailVerified      DateTime?
   image              String?
-  role               String?
+  role               UserRole?
   twitchId           String?  @unique
   accounts      Account[]
   sessions      Session[]
@@ -97,12 +103,6 @@ model GameMarketerApplication {
   updatedAt   DateTime @updatedAt
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
-}
-
-enum UserRole {
-  ADMIN
-  GAME_MARKETER
-  CONTENT_CREATOR
 }
 
 enum ApplicationStatus {

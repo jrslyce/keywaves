@@ -1,5 +1,4 @@
-import { ApplicationStatus } from '@prisma/client'
-import { UserRole } from '@prisma/client'
+import { ApplicationStatus, UserRole } from '@prisma/client'
 
 export interface Application {
   id: string;
