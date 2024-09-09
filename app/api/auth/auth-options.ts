@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import TwitchProvider from "next-auth/providers/twitch";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
-import { DefaultSession } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
@@ -11,6 +11,11 @@ declare module "next-auth" {
       role?: string;
       twitchId?: string;
     } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultUser {
+    role?: string;
+    twitchId?: string;
   }
 }
 

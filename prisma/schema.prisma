@@ -14,13 +14,13 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  twitchId      String?   @unique  // Add this line
-  role          UserRole  @default(CONTENT_CREATOR)
+  id                 String   @id @default(cuid())
+  name               String?
+  email              String?  @unique
+  emailVerified      DateTime?
+  image              String?
+  role               String?
+  twitchId           String?  @unique
   accounts      Account[]
   sessions      Session[]
   applications  Application[]
