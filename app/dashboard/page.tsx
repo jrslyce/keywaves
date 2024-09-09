@@ -22,9 +22,17 @@ export default function Dashboard() {
   useEffect(() => {
     if (status === 'authenticated') {
       fetch('/api/user')
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
         .then(data => setUserData(data))
-        .catch(error => console.error('Error fetching user data:', error))
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          // Handle the error state here, e.g., set an error message in the state
+        });
     }
   }, [status])
 
