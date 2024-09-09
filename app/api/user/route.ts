@@ -18,6 +18,7 @@ export async function GET() {
         name: true,
         email: true,
         role: true,
+        twitchId: true,
         applications: true,
         campaigns: true,
         gameMarketerApplication: true,

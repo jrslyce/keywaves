@@ -9,7 +9,7 @@ type UserData = {
   name: string
   email: string
   role: string
-  twitchId: string  // Add this line
+  twitchId: string | null
   applications: any[]
   campaigns: any[]
   gameMarketerApplication: any
@@ -48,7 +48,7 @@ export default function Dashboard() {
         <p>Name: {userData.name}</p>
         <p>Email: {userData.email}</p>
         <p>Role: {userData.role}</p>
-        <p>Twitch ID: {userData.twitchId}</p>
+        <p>Twitch ID: {userData.twitchId || 'Not available'}</p>
       </div>
 
       {userData.role === 'CONTENT_CREATOR' && (
