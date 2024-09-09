@@ -12,10 +12,20 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'twitch') {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { twitchId: account.providerAccountId },
+        });
+      }
+      return true;
+    },
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role;
+        session.user.twitchId = user.twitchId;
       }
       return session;
     },
