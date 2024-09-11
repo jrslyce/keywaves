@@ -8,11 +8,12 @@ export interface Application {
     name: string | null;
     email: string | null;
     role: UserRole | null;
-  };
+  } | null; // Allow user to be null
   companyName: string;
   website: string;
   reason: string;
-  userId: string;
+  linkedin: string | null; // Ensure this is included if you added it
+  userId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -13,40 +13,25 @@ type SessionUser = {
 };
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions)
-
-  if (!session || !session.user) {
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-  }
-
-  // Cast the user to the new type
-  const user = session.user as SessionUser;
-
-  const { companyName, website, reason } = await request.json()
+  const { companyName, website, reason, linkedin } = await request.json();
 
   try {
-    const application = await prisma.user.update({
-      where: { id: user.id },
+    const application = await prisma.gameMarketerApplication.create({
       data: {
-        role: 'GAME_MARKETER',
-        gameMarketerApplication: {
-          create: {
-            companyName,
-            website,
-            reason,
-            status: 'PENDING',
-          },
-        },
+        companyName,
+        website,
+        reason,
+        linkedin, // Include the LinkedIn field
+        status: 'PENDING',
+        userId: undefined, // Use undefined instead of null
       },
-      include: { gameMarketerApplication: true }, // Include the gameMarketerApplication
     });
 
-    // Send email notification
-    await sendApplicationEmail(application.gameMarketerApplication);
+    await sendApplicationEmail(application);
 
     return NextResponse.json({ message: 'Application submitted successfully' }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting application:', error);
-    return NextResponse.json({ error: 'Error submitting application' }, { status: 500 });
+    return NextResponse.json({ error: 'Error submitting application', details: error.message }, { status: 500 });
   }
 }

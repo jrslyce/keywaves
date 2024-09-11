@@ -9,6 +9,7 @@ export default function ApplyAsGameMarketer() {
     companyName: '',
     website: '',
     reason: '',
+    linkedin: '', // New field for LinkedIn URL
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -85,6 +86,17 @@ export default function ApplyAsGameMarketer() {
             className="w-full p-2 border rounded"
             rows={4}
           ></textarea>
+        </div>
+        <div>
+          <label htmlFor="linkedin" className="block mb-1">LinkedIn Profile URL</label>
+          <input
+            type="url"
+            id="linkedin"
+            name="linkedin"
+            value={formData.linkedin}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
         </div>
         <button 
           type="submit" 

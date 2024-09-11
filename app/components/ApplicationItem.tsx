@@ -26,7 +26,7 @@ export default function ApplicationItem({ application }: { application: Applicat
 
   return (
     <div className="border p-4 rounded">
-      <h2 className="text-xl font-semibold">{application.user.name || 'Unknown'}</h2>
+      <h2 className="text-xl font-semibold">{application.user ? application.user.name : 'Unknown'}</h2>
       <p>Company: {application.companyName}</p>
       <p>Website: {application.website}</p>
       <p>Reason: {application.reason}</p>
