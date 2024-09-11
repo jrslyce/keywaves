@@ -4,8 +4,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 export const sendApplicationEmail = async (applicationData: any) => {
   const msg = {
-    to: 'applicant@keywaves.club', // Applicant's email
-    from: 'noreply@keywaves.club', // Your verified sender email
+    to: 'jared@muxy.io', // Applicant's email
+    from: 'noreply@muxy.io', // Your verified sender email
     subject: 'New Game Marketer Application Received',
     text: `A new application has been submitted.\n\nDetails:\nCompany Name: ${applicationData.companyName}\nWebsite: ${applicationData.website}\nReason: ${applicationData.reason}\n\nYou can review the application here: https://keywaves.club/admin/applications`,
     html: `<p>A new application has been submitted.</p>
