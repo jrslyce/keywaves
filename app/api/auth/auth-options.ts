@@ -2,21 +2,15 @@ import { NextAuthOptions } from "next-auth";
 import TwitchProvider from "next-auth/providers/twitch";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
-import { DefaultSession, DefaultUser } from "next-auth";
+import { Session } from "next-auth"; // Add this import
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      role?: string;
-      twitchId?: string;
-    } & DefaultSession["user"];
-  }
-
-  interface User extends DefaultUser {
+// Extend the Session type
+interface CustomSession extends Session {
+  user: {
+    id: string;
     role?: string;
-    twitchId?: string;
-  }
+    twitchId?: string; // Add twitchId here
+  };
 }
 
 export const authOptions: NextAuthOptions = {
@@ -37,7 +31,7 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async session({ session, user }) {
+    async session({ session, user }: { session: CustomSession; user: any }) {
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role as string | undefined;
