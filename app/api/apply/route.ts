@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import prisma from '@/app/lib/prisma'
 import { authOptions } from '../auth/auth-options'
+import { sendApplicationEmail } from '@/app/lib/sendEmail';
 
 // Add this type at the top of the file
 type SessionUser = {
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
   const { companyName, website, reason } = await request.json()
 
   try {
-    await prisma.user.update({
+    const application = await prisma.user.update({
       where: { id: user.id },
       data: {
         role: 'GAME_MARKETER',
@@ -33,15 +34,19 @@ export async function POST(request: Request) {
             companyName,
             website,
             reason,
-            status: 'PENDING'
-          }
-        }
+            status: 'PENDING',
+          },
+        },
       },
-    })
+      include: { gameMarketerApplication: true }, // Include the gameMarketerApplication
+    });
 
-    return NextResponse.json({ message: 'Application submitted successfully' }, { status: 200 })
+    // Send email notification
+    await sendApplicationEmail(application.gameMarketerApplication);
+
+    return NextResponse.json({ message: 'Application submitted successfully' }, { status: 200 });
   } catch (error) {
-    console.error('Error submitting application:', error)
-    return NextResponse.json({ error: 'Error submitting application' }, { status: 500 })
+    console.error('Error submitting application:', error);
+    return NextResponse.json({ error: 'Error submitting application' }, { status: 500 });
   }
 }
