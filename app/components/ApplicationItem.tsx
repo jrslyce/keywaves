@@ -15,7 +15,7 @@ export default function ApplicationItem({ application }: { application: Applicat
       })
 
       if (response.ok) {
-        setStatus(newStatus)
+        setStatus(newStatus as Application['status'])
       } else {
         console.error('Failed to update application status')
       }
