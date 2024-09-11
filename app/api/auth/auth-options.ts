@@ -1,16 +1,19 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth"; // Added Session import
 import TwitchProvider from "next-auth/providers/twitch";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/prisma";
-import { Session } from "next-auth"; // Add this import
+import { AdapterUser } from "next-auth/adapters"; // Import AdapterUser
 
-// Extend the Session type
 interface CustomSession extends Session {
   user: {
     id: string;
     role?: string;
-    twitchId?: string; // Add twitchId here
+    twitchId?: string; // Ensure this is defined
   };
+}
+
+interface CustomUser extends AdapterUser {
+  twitchId?: string; // Extend AdapterUser to include twitchId
 }
 
 export const authOptions: NextAuthOptions = {
@@ -31,11 +34,12 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async session({ session, user }: { session: CustomSession; user: any }) {
+    async session({ session, user }: { session: Session; user: CustomUser }) {
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role as string | undefined;
-        session.user.twitchId = user.twitchId as string | undefined;
+        const customSession = session as CustomSession;
+        customSession.user.twitchId = user.twitchId; // No need for type assertion
       }
       return session;
     },

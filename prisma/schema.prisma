@@ -20,18 +20,18 @@ enum UserRole {
 }
 
 model User {
-  id                 String   @id @default(cuid())
-  name               String?
-  email              String?  @unique
-  emailVerified      DateTime?
-  image              String?
-  role               UserRole?
-  twitchId           String?  @unique
-  accounts      Account[]
-  sessions      Session[]
-  applications  Application[]
-  campaigns     Campaign[]
-  gameMarketerApplication GameMarketerApplication?
+  id                          String   @id @default(cuid())
+  name                        String?
+  email                       String?  @unique
+  emailVerified               DateTime?
+  image                       String?
+  role                        UserRole?
+  twitchId                    String?  @unique
+  accounts                    Account[]
+  sessions                    Session[]
+  applications                 Application[]
+  campaigns                   Campaign[]
+  gameMarketerApplication      GameMarketerApplication? // Optional relationship
 }
 
 model Account {
@@ -101,7 +101,7 @@ model GameMarketerApplication {
   status      ApplicationStatus @default(PENDING)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  userId      String   @unique
+  userId      String @unique // Added @unique to enforce uniqueness
   user        User     @relation(fields: [userId], references: [id])
 }
 
